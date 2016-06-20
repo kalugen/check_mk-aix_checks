@@ -1,0 +1,51 @@
+title: CPU Usage for Aix LPARs
+agents: os
+catalog: os/kernel
+license: GPL
+distribution: MIS
+description:
+ This check monitors the usage of CPUs on Aix LPARs, handling 4 possible configurations:
+ * Dedicated/Capped
+ * Dedicated/Donating
+ * Shared/Capped
+ * Shared/Uncapped
+ different logic is used by the agent to gather data for the different cases. No
+ prior knowledge of LPAR configuration is required or needed on the CheckMK
+ server side of things.
+
+ Configuration data comes from the command "lparstat", while CPU usage is derived
+ from the average of vmstat data gathered over a short period of time. Default
+ period is 5 seconds.
+
+ It is probably best to run this script as a cached agent plugin.
+
+item:
+ Nothing
+
+examples:
+ # Set default levels for all LPARs
+ aix_lpar_cpu_defaults["pct_usage_levels"] = (90.0, 95.0)
+
+ # Set the number of minutes for the moving average calculation
+ aix_lpar_cpu_defaults["avg_min"] = 30
+
+ check_parameters = [
+    # Hosts with tag "production" get custom levels
+    ( {'pct_usage_levels' : (50.0, 80.0) } }, ['production', ], ALL_HOSTS, ALL_SERVICES ),
+ ] + check_parameters
+
+perfdata:
+ the check reports both the value and an average of the metrics (num_usage and pct_usage).
+
+inventory:
+ This check supports inventory.
+
+[parameters]
+parameters (dict): this check supports the new parameters dictionary format.
+
+{"pct_usage_levels"}: Warning and critical % cpu usage levels (float)
+{"num_usage_levels"}: Warning and critical number of cores usage levels (float)
+{"avg_min"}: Warning and critical syscalls rate levels (int)
+
+[configuration]
+aix_lpar_cpu_defaults: Default levels for pct_usage, num_usage and avg min.
