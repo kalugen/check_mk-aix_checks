@@ -186,9 +186,9 @@ case "${TYPE}" in
     case "${MODE}" in
 
       "Uncapped") 
-	# Entitlement here means "minimum guaranteed cores".
+        # Entitlement here means "minimum guaranteed cores".
 
-	# Note: at this point ENT has already been set by the lparstat output parser
+        # Note: at this point ENT has already been set by the lparstat output parser
 
         # In a way similar to "dedicated" LPARs, here the maximum number of usable
         # cores is limited by the number of configured logical processors and
@@ -199,13 +199,13 @@ case "${TYPE}" in
         USAGE_CORES=$(_vmstat ${COUNT} | \
               awk -v '{ SUM+=$(NF-1) } END { print (SUM/NR) }')
 
-	# CPU usage % is the average of (pc/max cores) * 100
+        # CPU usage % is the average of (pc/max cores) * 100
         USAGE_PCT=$( echo "scale=2;${USAGE_CORES}*(100/${MAX_CORES})" | bc );;
 
       "Capped") 
-	# Entitlement here is "maximum usable cores"
+        # Entitlement here is "maximum usable cores"
 
-	# Note: at this point ENT has already been set by the lparstat output parser
+        # Note: at this point ENT has already been set by the lparstat output parser
 
         # MAX_CORES here is the same as the entitled capacity
         MAX_CORES=${ENT}
@@ -218,7 +218,7 @@ case "${TYPE}" in
         USAGE_CORES=$( echo "scale=2;${USAGE_PCT}*${ENT}/100.00" | bc );;
 
       *) 
-	# Unsupported mode
+        # Unsupported mode
         echo "0.0;0.0;0.0"
         exit 255;;
 
@@ -234,3 +234,4 @@ esac
 echo "$(printf "%.2f;%.2f;%.2f;%.2f\n" ${USAGE_PCT} ${USAGE_CORES} ${MAX_CORES} ${ENT})"
 
 rm ${TMPFILE}
+
