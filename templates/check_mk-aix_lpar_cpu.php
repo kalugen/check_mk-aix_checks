@@ -2,7 +2,7 @@
 
 setlocale(LC_ALL, "POSIX");
 
-$opt[1] = "--vertical-label \"% Usage" title \"$servicedesc\" ";
+$opt[1] = "--vertical-label \"% Usage\" title \"$servicedesc\" ";
 $def[1]  = "DEF:used=$RRDFILE[1]:$DS[1]:MAX ";
 $def[1] .= "AREA:used#2080ff:\"Usage\:\" ";
 $def[1] .= "GPRINT:used:LAST:\"%.2lf%%\" ";
@@ -29,4 +29,3 @@ if ($WARN[3] != "") {
 }
 
 ?>
-
