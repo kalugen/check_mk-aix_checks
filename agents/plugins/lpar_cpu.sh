@@ -108,20 +108,20 @@ ENT="0.0"
 
 # Shortcut function
 function _vmstat {
-  vmstat 1 ${1} | tail -n ${1}
+  vmstat 1 "${1}" | tail -n "${1}"
 }
 
 # My version of "mktemp" for ksh, pseudo random using md5sum of time and RANDOM
 # from the shell. Not cryptographically secure, just good enough for the task.
 function _mktemp {
-  typeset var TMPFILE="/tmp/$$.$(echo "${RANDOM}$(date +%y%m%d%H%M%S)" | \
+  typeset TMPFILE="/tmp/$$.$(echo "${RANDOM}$(date +%y%m%d%H%M%S)" | \
     md5sum | cut -f1 -d' ').aix_lpar_cpu.cmk"
 
   # Avoids overwriting any existing files: returns only if the new file does
   # not exists. Creates an empty file before exiting.
-  if [ ! -e ${TMPFILE} ]; then
-    touch ${TMPFILE}
-    echo ${TMPFILE}
+  if [ ! -e "${TMPFILE}" ]; then
+    touch "${TMPFILE}"
+    echo "${TMPFILE}"
   else
     # if we hit an already existing file, avoids overwriting 
     # and try again by recursing
@@ -141,7 +141,7 @@ TMPFILE=$(_mktemp)
 # Capture the raw output of lparstat in our temporary file. Ksh 9.3 does not
 # support BASH's syntax of pseudo-file redirection "< <(command)"
 lparstat | grep "System configuration" | \
-    awk -F':' '{print $NF}' | perl -pe 's/ /\n/g'> ${TMPFILE} 2>&1
+    awk -F':' '{print $NF}' | perl -pe 's/ /\n/g'> "${TMPFILE}" 2>&1
 
 ##########################
 # LPARSTAT HEADER PARSER #
@@ -149,12 +149,12 @@ lparstat | grep "System configuration" | \
 # Creates constants from lparstat output (see above)
 # TYPE, MODE, LCPU, SMT e MEM will be always created 
 # PSIZE and ENT will be created only for LPAR in "Shared" mode
-while IFS='=' read VAR VAL; do
-  if [ ${VAL} ]; then
-    VAR=$(echo ${VAR}|tr "[:lower:]" "[:upper:]")
+while IFS='=' read -r VAR VAL; do
+  if [ "${VAL}" ]; then
+    VAR=$(echo "${VAR}"|tr "[:lower:]" "[:upper:]")
     typeset -r "${VAR}=${VAL}"
   fi;
-done < ${TMPFILE}
+done < "${TMPFILE}"
 
 case "${TYPE}" in
   "Dedicated") # In a "dedicated" LPAR a number of physical CPUs are statically assigned
@@ -166,7 +166,7 @@ case "${TYPE}" in
         MAX_CORES=$(( LCPU/SMT ))
 
         # Manually sets ENT for perfdata sake
-        ENT=${MAX_CORES}
+        ENT="${MAX_CORES}"
 
         # We get our average cpu % from the "idle" (id) column of vmstat, so that
         # real usage = 100-idle.
@@ -231,7 +231,7 @@ case "${TYPE}" in
 esac
 
 # Stampa l'output in formato float "0.00"
-echo "$(printf "%.2f;%.2f;%.2f;%.2f\n" ${USAGE_PCT} ${USAGE_CORES} ${MAX_CORES} ${ENT})"
+printf "%.2f;%.2f;%.2f;%.2f\n" "${USAGE_PCT}" "${USAGE_CORES}" "${MAX_CORES}" "${ENT}"
 
-rm ${TMPFILE}
+rm "${TMPFILE}"
 
