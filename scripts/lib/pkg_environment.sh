@@ -40,26 +40,47 @@ export DESCRIPTION="Package Descr"
 export URL="http://mxplgitas01.mbdom.mbgroup.ad/Monitoring/check_mk-${NAME}"
 
 # Now populate files arrays: this is needed for custom package descriptors
-pushd ${SOURCEDIR}/agents > /dev/null
-export AGENTS=$(${FIND_HERE} -type f|xargs|sed 's/ /,/g; s/\.\///g')
-popd > /dev/null
+if [ -d  ${SOURCEDIR}/agents ]; then
+  pushd ${SOURCEDIR}/agents > /dev/null
+  export AGENTS=$(${FIND_HERE} -type f|xargs|sed 's/ /,/g; s/\.\///g')
+  popd > /dev/null
+fi
 
-pushd ${SOURCEDIR}/docs > /dev/null
-export CHECKMAN=$(${FIND_HERE} -type f|xargs|sed 's/ /,/g;s/\.\///g')
-popd > /dev/null
+if [ -d  ${SOURCEDIR}/docs ]; then
+  pushd ${SOURCEDIR}/docs > /dev/null
+  export CHECKMAN=$(${FIND_HERE} -type f|xargs|sed 's/ /,/g;s/\.\///g')
+  popd > /dev/null
+fi
 
-pushd ${SOURCEDIR}/checks > /dev/null
-export CHECKS=$(${FIND_HERE} -type f|xargs|sed 's/ /,/g;s/\.\///g')
-popd > /dev/null
+if [ -d  ${SOURCEDIR}/otherdocs ]; then
+  pushd ${SOURCEDIR}/otherdocs > /dev/null
+  export DOC=$(${FIND_HERE} -type f|xargs|sed 's/ /,/g;s/\.\///g')
+  popd > /dev/null
+fi
 
-pushd ${SOURCEDIR}/templates > /dev/null
-export PNP_TEMPLATES=$(${FIND_HERE} -type f|xargs|sed 's/ /,/g;s/\.\///g')
-popd > /dev/null
+if [ -d  ${SOURCEDIR}/checks ]; then
+  pushd ${SOURCEDIR}/checks > /dev/null
+  export CHECKS=$(${FIND_HERE} -type f|xargs|sed 's/ /,/g;s/\.\///g')
+  popd > /dev/null
+fi
 
-pushd ${SOURCEDIR}/web > /dev/null
-FIND_STD_DIRS="${FIND_HERE} -type f| grep -E 'config|dashboard|icons|pages|perfometer|sidebar|views|visuals|wato'"
-FIND_NON_STD_DIRS="${FIND_HERE} -type d| grep -vE 'config|dashboard|icons|pages|perfometer|sidebar|views|visuals|wato|plugins$|\.$'"
-WEB=$( cat <(eval ${FIND_STD_DIRS}) <(eval ${FIND_NON_STD_DIRS}) | xargs | sed 's/ /,/g;s/\.\///g')
-export WEB
-popd > /dev/null
+if [ -d  ${SOURCEDIR}/templates ]; then
+  pushd ${SOURCEDIR}/templates > /dev/null
+  export PNP_TEMPLATES=$(${FIND_HERE} -type f|xargs|sed 's/ /,/g;s/\.\///g')
+  popd > /dev/null
+fi
 
+if [ -d  ${SOURCEDIR}/notifications ]; then
+  pushd ${SOURCEDIR}/notifications > /dev/null
+  export NOTIFICATIONS=$(${FIND_HERE} -type f|xargs|sed 's/ /,/g;s/\.\///g')
+  popd > /dev/null
+fi
+
+if [ -d  ${SOURCEDIR}/web ]; then
+  pushd ${SOURCEDIR}/web > /dev/null
+  FIND_STD_DIRS="${FIND_HERE} -type f| grep -E 'config|dashboard|icons|pages|perfometer|sidebar|views|visuals|wato'"
+  FIND_NON_STD_DIRS="${FIND_HERE} -type d| grep -vE 'config|dashboard|icons|pages|perfometer|sidebar|views|visuals|wato|plugins$|\.$'"
+  WEB=$( cat <(eval ${FIND_STD_DIRS}) <(eval ${FIND_NON_STD_DIRS}) | xargs | sed 's/ /,/g;s/\.\///g')
+  export WEB
+  popd > /dev/null
+fi
