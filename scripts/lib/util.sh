@@ -24,9 +24,11 @@ fi
 export SITEUSER=${SITE}
 export SITEGROUP=${SITE}
 
-export LOCALSHARE="${OMDBASE}/${SITE}/local/share"
-export CHECKDIR="${LOCALSHARE}/check_mk/checks"
 export MANDIR="${LOCALSHARE}/check_mk/checkman"
+export DOCSDIR="${LOCALSHARE}/check_mk/docs"
+export CHECKDIR="${LOCALSHARE}/check_mk/checks"
 export TEMPLDIR="${LOCALSHARE}/check_mk/pnp-templates"
-export WEBPLUGINSDIR="${LOCALSHARE}/check_mk/web/plugins"
 export AGENTSDIR="${LOCALSHARE}/check_mk/agents"
+export LOCALSHARE="${OMDBASE}/${SITE}/local/share"
+export WEBPLUGINSDIR="${LOCALSHARE}/check_mk/web/plugins"
+export NOTIFICATIONSDIR="${LOCALSHARE}/check_mk/notifications"

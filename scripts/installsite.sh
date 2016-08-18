@@ -16,6 +16,9 @@ if [ ${DRYRUN} -eq 0 ]; then
     # The checks manpages
     cp -v ${SOURCEDIR}/docs/*                   ${MANDIR}/
 
+    # Generic documentation
+    cp -v ${SOURCEDIR}/otherdocs/*              ${DOCSDIR}/
+
     # PNP4Nagios templates
     cp -v ${SOURCEDIR}/templates/*              ${TEMPLDIR}/
 
@@ -27,6 +30,9 @@ if [ ${DRYRUN} -eq 0 ]; then
     # Agent files
     cp -v ${SOURCEDIR}/agents/plugins/*         ${AGENTSDIR}/plugins
     cp -v ${SOURCEDIR}/agents/*                 ${AGENTSDIR}/
+
+    # Notification scripts
+    cp -v ${SOURCEDIR}/notifications/*          ${NOTIFICATIONSDIR}/
 
     # Deploy the package info, making cmk package management aware of our modifications
     # NOTE: this depends on the exported variables above
