@@ -17,7 +17,8 @@ if [ ${DRYRUN} -eq 0 ]; then
     cp -v ${SOURCEDIR}/docs/*                   ${MANDIR}/
 
     # Generic documentation
-    cp -v ${SOURCEDIR}/otherdocs/*              ${DOCSDIR}/
+    [ -d ${DOCSDIR}/${NAME}/ ] || mkdir -p ${DOCSDIR}/${NAME}/
+    cp -v ${SOURCEDIR}/otherdocs/*              ${DOCSDIR}/${NAME}/
 
     # PNP4Nagios templates
     cp -v ${SOURCEDIR}/templates/*              ${TEMPLDIR}/
