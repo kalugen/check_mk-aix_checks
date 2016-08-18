@@ -54,7 +54,7 @@ fi
 
 if [ -d  ${SOURCEDIR}/otherdocs ]; then
   pushd ${SOURCEDIR}/otherdocs > /dev/null
-  export DOC=$(${FIND_HERE} -type f|xargs|sed 's/ /,/g;s/\.\///g')
+  export DOC=$( ${FIND_HERE} -type f | while read DOC; do echo "${NAME}/$(basename ${DOC})"; done | xargs | sed 's/ /,/g;s/\.\///g'  )
   popd > /dev/null
 fi
 
