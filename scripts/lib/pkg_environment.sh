@@ -78,9 +78,8 @@ fi
 
 if [ -d  ${SOURCEDIR}/web ]; then
   pushd ${SOURCEDIR}/web > /dev/null
-  FIND_STD_DIRS="${FIND_HERE} -type f| grep -E 'config|dashboard|icons|pages|perfometer|sidebar|views|visuals|wato'"
-  FIND_NON_STD_DIRS="${FIND_HERE} -type d| grep -vE 'config|dashboard|icons|pages|perfometer|sidebar|views|visuals|wato|plugins$|\.$'"
-  WEB=$( cat <(eval ${FIND_STD_DIRS}) <(eval ${FIND_NON_STD_DIRS}) | xargs | sed 's/ /,/g;s/\.\///g')
+  STD_DIRS='config|dashboard|icons|pages|perfometer|sidebar|views|visuals|wato'
+  WEB=$( echo $(${FIND_HERE} -type f | grep -E ${STD_DIRS}) | xargs | sed 's/ /,/g;s/\.\///g')
   export WEB
   popd > /dev/null
 fi
