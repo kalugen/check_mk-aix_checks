@@ -197,7 +197,7 @@ case "${TYPE}" in
 
         # Here average core num usage is collected directly from the "pc" column of vmstat
         USAGE_CORES=$(_vmstat ${COUNT} | \
-              awk -v '{ SUM+=$(NF-1) } END { print (SUM/NR) }')
+              awk '{ SUM+=$(NF-1) } END { print (SUM/NR) }')
 
         # CPU usage % is the average of (pc/max cores) * 100
         USAGE_PCT=$( echo "scale=2;${USAGE_CORES}*(100/${MAX_CORES})" | bc );;
@@ -234,4 +234,3 @@ esac
 printf "%.2f;%.2f;%.2f;%.2f\n" "${USAGE_PCT}" "${USAGE_CORES}" "${MAX_CORES}" "${ENT}"
 
 rm "${TMPFILE}"
-
