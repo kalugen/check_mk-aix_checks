@@ -1,0 +1,34 @@
+variables:
+  GIT_STRATEGY: clone
+
+stages:
+  - build
+  - deploy
+
+build-test:
+    script: 
+        - "sudo ./scripts/build.sh"
+        - "sudo chown -R gitlab-runner ."
+    stage: build
+    tags:
+        - cmk
+        - test
+    artifacts:
+        paths:
+            - "packages/"
+        expire_in: 1 week
+        name: $CI_PROJECT_NAME
+        
+deploy-test:
+    script: 
+        - "sudo ./scripts/install.sh"
+        - "sudo chown -R gitlab-runner ."
+    dependencies:
+        - build-test
+    stage: deploy
+    environment: test
+    only:
+        - master
+    tags:
+        - cmk
+        - test
