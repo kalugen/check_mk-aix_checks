@@ -3,12 +3,12 @@
 export SOURCEDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )
 
 SITE_BLACKLIST="pippo"
-SITE_PATH="/omd/sites/${SITE}"
 
 # Determina l'ultimo pacchetto disponibile (per versione). Il '-v' di 'ls' è cruciale!
 PACKAGE=$(ls -1v ${SOURCEDIR}/packages/*.mkp | tail -n1)
 
 /usr/bin/omd  sites | grep -v SITE | awk '{print $1}' | grep -vE "${SITE_BLACKLIST}" | while read SITE; do
+    SITE_PATH="/omd/sites/${SITE}"
 
     # Install the appropriate files in the correct positions inside the site
     cp ${PACKAGE} ${SITE_PATH}/tmp
