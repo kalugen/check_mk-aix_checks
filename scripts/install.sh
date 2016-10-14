@@ -12,7 +12,7 @@ PACKAGE=$(ls -1v ${SOURCEDIR}/packages/*.mkp | tail -n1)
 
     # Install the appropriate files in the correct positions inside the site
     cp ${PACKAGE} ${SITE_PATH}/tmp
-    su - ${SITE} -c "cmk -P install ${SITE_PATH}/tmp/$(basename ${PACKAGE})"
+    su - ${SITE} -c "cmk -P -v install ${SITE_PATH}/tmp/$(basename ${PACKAGE})"
     rm ${SITE_PATH}/tmp/*.mkp
 
     . ${SOURCEDIR}/scripts/lib/util.sh ${SITE}
