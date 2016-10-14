@@ -20,11 +20,4 @@ find ${SOURCEDIR} -name .placeholder | xargs rm -f
 ${SOURCEDIR}/scripts/installsite.sh ${BUILD_SITE}
 ${SOURCEDIR}/scripts/package.sh ${BUILD_SITE}
 
-/usr/bin/expect <<EOD
-spawn /usr/bin/omd rm --kill ${BUILD_SITE}
-expect {
-         "(yes/NO): "                      { send "yes\n"; exp_continue }
-         "omd: no such site: ${BUILD_SITE} { exp_continue }
-	 eof
-}
-EOD
+/usr/bin/omd -f rm --kill ${BUILD_SITE}
